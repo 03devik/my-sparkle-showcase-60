@@ -3,10 +3,10 @@ import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
 import HourlyForecast from "@/components/HourlyForecast";
 import WeatherDetails from "@/components/WeatherDetails";
+import WeatherChat from "@/components/WeatherChat";
 import { useWeather } from "@/hooks/useWeather";
 import { useToast } from "@/hooks/use-toast";
 import weatherBg from "@/assets/weather-bg.jpg";
-
 const Index = () => {
   const { weather, hourlyForecast, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
   const { toast } = useToast();
@@ -117,6 +117,9 @@ const Index = () => {
         </p>
       </footer>
       </div>
+
+      {/* AI Weather Assistant */}
+      <WeatherChat weatherData={weather} />
     </div>
   );
 };
