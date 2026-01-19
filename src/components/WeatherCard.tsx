@@ -11,7 +11,7 @@ const WeatherCard = ({ weather }: WeatherCardProps) => {
   };
 
   return (
-    <Card className="bg-card/50 backdrop-blur-lg border-border/50 overflow-hidden">
+    <Card className="overflow-hidden">
       <CardContent className="p-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
