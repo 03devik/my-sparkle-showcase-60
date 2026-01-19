@@ -1,8 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-import { MessageCircle, Send, X, Bot, User } from "lucide-react";
+import { Cloud, MessageCircle, X, Bot, User, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useState, useRef, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { WeatherData } from "@/hooks/useWeather";
 
@@ -11,13 +16,13 @@ interface Message {
   content: string;
 }
 
-interface WeatherChatProps {
+interface NavbarProps {
   weatherData: WeatherData | null;
 }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/weather-chat`;
 
-const WeatherChat = ({ weatherData }: WeatherChatProps) => {
+const Navbar = ({ weatherData }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -172,108 +177,118 @@ const WeatherChat = ({ weatherData }: WeatherChatProps) => {
   };
 
   return (
-    <>
-      {/* Chat Toggle Button */}
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
-        size="icon"
-      >
-        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
-      </Button>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
+      <div className="flex h-16 items-center justify-between px-6">
+        {/* Logo */}
+        <div className="flex items-center gap-3">
+          <Cloud className="w-8 h-8 text-primary" />
+          <h1 className="text-xl font-bold text-foreground">Weather App</h1>
+        </div>
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-24 right-6 w-80 sm:w-96 h-[500px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden">
-          {/* Header */}
-          <div className="p-4 border-b border-border bg-primary/5">
-            <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-foreground">Weather Assistant</h3>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {weatherData
-                ? `Ask me about ${weatherData.city}'s weather!`
-                : "Search for a city to get weather insights"}
-            </p>
-          </div>
-
-          {/* Messages */}
-          <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-            {messages.length === 0 && (
-              <div className="text-center text-muted-foreground py-8">
-                <Bot className="h-12 w-12 mx-auto mb-3 text-primary/50" />
-                <p className="text-sm">Hi! I'm your weather assistant.</p>
-                <p className="text-xs mt-1">
+        {/* AI Assistant Button */}
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Bot className="h-4 w-4" />
+              <span className="hidden sm:inline">AI Assistant</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent 
+            className="w-80 sm:w-96 h-[450px] p-0 mr-4"
+            align="end"
+          >
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="p-4 border-b border-border bg-primary/5">
+                <div className="flex items-center gap-2">
+                  <Bot className="h-5 w-5 text-primary" />
+                  <h3 className="font-semibold text-foreground">Weather Assistant</h3>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
                   {weatherData
-                    ? "Ask me about current conditions, what to wear, or outdoor activities!"
-                    : "Search for a city first, then ask me anything!"}
+                    ? `Ask me about ${weatherData.city}'s weather!`
+                    : "Search for a city to get weather insights"}
                 </p>
               </div>
-            )}
-            <div className="space-y-4">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  {msg.role === "assistant" && (
-                    <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm ${
-                      msg.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-foreground"
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
-                  {msg.role === "user" && (
-                    <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center shrink-0">
-                      <User className="h-4 w-4 text-primary-foreground" />
-                    </div>
-                  )}
-                </div>
-              ))}
-              {isLoading && messages[messages.length - 1]?.role === "user" && (
-                <div className="flex gap-2 justify-start">
-                  <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="bg-muted px-3 py-2 rounded-2xl">
-                    <div className="flex gap-1">
-                      <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
 
-          {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-border">
-            <div className="flex gap-2">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about the weather..."
-                disabled={isLoading}
-                className="flex-1"
-              />
-              <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                <Send className="h-4 w-4" />
-              </Button>
+              {/* Messages */}
+              <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+                {messages.length === 0 && (
+                  <div className="text-center text-muted-foreground py-8">
+                    <Bot className="h-12 w-12 mx-auto mb-3 text-primary/50" />
+                    <p className="text-sm">Hi! I'm your weather assistant.</p>
+                    <p className="text-xs mt-1">
+                      {weatherData
+                        ? "Ask me about current conditions, what to wear, or outdoor activities!"
+                        : "Search for a city first, then ask me anything!"}
+                    </p>
+                  </div>
+                )}
+                <div className="space-y-4">
+                  {messages.map((msg, i) => (
+                    <div
+                      key={i}
+                      className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                    >
+                      {msg.role === "assistant" && (
+                        <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <Bot className="h-4 w-4 text-primary" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm ${
+                          msg.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-foreground"
+                        }`}
+                      >
+                        {msg.content}
+                      </div>
+                      {msg.role === "user" && (
+                        <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center shrink-0">
+                          <User className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {isLoading && messages[messages.length - 1]?.role === "user" && (
+                    <div className="flex gap-2 justify-start">
+                      <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Bot className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="bg-muted px-3 py-2 rounded-2xl">
+                        <div className="flex gap-1">
+                          <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                          <span className="h-2 w-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+
+              {/* Input */}
+              <form onSubmit={handleSubmit} className="p-4 border-t border-border">
+                <div className="flex gap-2">
+                  <Input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Ask about the weather..."
+                    disabled={isLoading}
+                    className="flex-1"
+                  />
+                  <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      )}
-    </>
+          </PopoverContent>
+        </Popover>
+      </div>
+    </header>
   );
 };
 
-export default WeatherChat;
+export default Navbar;
