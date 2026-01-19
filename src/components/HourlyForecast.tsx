@@ -19,7 +19,7 @@ const HourlyForecast = ({ forecast }: HourlyForecastProps) => {
   };
 
   return (
-    <Card className="bg-card/50 backdrop-blur-lg border-border/50">
+    <Card>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Clock className="w-5 h-5 text-primary" />
@@ -32,7 +32,7 @@ const HourlyForecast = ({ forecast }: HourlyForecastProps) => {
             {forecast.map((hour, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center gap-1 p-3 bg-background/50 rounded-lg min-w-[80px]"
+                className="flex flex-col items-center gap-1 p-3 bg-background/30 backdrop-blur-md rounded-xl min-w-[80px] border border-border/20"
               >
                 <span className="text-sm text-muted-foreground">{hour.time}</span>
                 <img

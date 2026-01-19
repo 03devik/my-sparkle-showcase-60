@@ -79,7 +79,7 @@ const WeatherDetails = ({
   ];
 
   return (
-    <Card className="bg-card/50 backdrop-blur-lg border-border/50">
+    <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-lg">Weather Details</CardTitle>
       </CardHeader>
@@ -88,7 +88,7 @@ const WeatherDetails = ({
           {details.map((detail, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 p-4 bg-background/50 rounded-lg"
+              className="flex items-center gap-3 p-4 bg-background/30 backdrop-blur-md rounded-xl border border-border/20"
             >
               <detail.icon className="w-8 h-8 text-primary flex-shrink-0" />
               <div className="min-w-0">
