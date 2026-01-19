@@ -1,16 +1,5 @@
-import { Cloud, Droplets, Wind, Thermometer } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
-interface WeatherData {
-  city: string;
-  country: string;
-  temp: number;
-  feels_like: number;
-  humidity: number;
-  wind_speed: number;
-  description: string;
-  icon: string;
-}
+import type { WeatherData } from "@/hooks/useWeather";
 
 interface WeatherCardProps {
   weather: WeatherData;
@@ -43,38 +32,6 @@ const WeatherCard = ({ weather }: WeatherCardProps) => {
             <span className="text-6xl font-bold text-foreground">
               {Math.round(weather.temp)}°C
             </span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg">
-            <Thermometer className="w-6 h-6 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Feels Like</p>
-              <p className="text-lg font-semibold text-foreground">
-                {Math.round(weather.feels_like)}°C
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg">
-            <Droplets className="w-6 h-6 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Humidity</p>
-              <p className="text-lg font-semibold text-foreground">
-                {weather.humidity}%
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg">
-            <Wind className="w-6 h-6 text-primary" />
-            <div>
-              <p className="text-sm text-muted-foreground">Wind</p>
-              <p className="text-lg font-semibold text-foreground">
-                {weather.wind_speed} m/s
-              </p>
-            </div>
           </div>
         </div>
       </CardContent>

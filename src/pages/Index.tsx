@@ -1,11 +1,13 @@
 import { Cloud } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
+import HourlyForecast from "@/components/HourlyForecast";
+import WeatherDetails from "@/components/WeatherDetails";
 import { useWeather } from "@/hooks/useWeather";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const { weather, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
+  const { weather, hourlyForecast, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
   const { toast } = useToast();
 
   const handleGetLocation = () => {
@@ -43,10 +45,10 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 pb-12">
-        <div className="w-full max-w-2xl space-y-8">
+      <main className="flex-1 px-6 pb-12">
+        <div className="w-full max-w-5xl mx-auto space-y-6">
           {/* Search Section */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 py-8">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground text-center">
               Check the Weather
             </h2>
@@ -67,7 +69,27 @@ const Index = () => {
             </div>
           )}
 
-          {!isLoading && weather && <WeatherCard weather={weather} />}
+          {!isLoading && weather && (
+            <div className="space-y-6">
+              {/* Current Weather */}
+              <WeatherCard weather={weather} />
+
+              {/* 24-Hour Forecast */}
+              <HourlyForecast forecast={hourlyForecast} />
+
+              {/* Weather Details */}
+              <WeatherDetails
+                humidity={weather.humidity}
+                wind_speed={weather.wind_speed}
+                temp={weather.temp}
+                feels_like={weather.feels_like}
+                pressure={weather.pressure}
+                uv_index={weather.uv_index}
+                sunrise={weather.sunrise}
+                sunset={weather.sunset}
+              />
+            </div>
+          )}
 
           {!isLoading && !weather && (
             <div className="text-center py-12">
