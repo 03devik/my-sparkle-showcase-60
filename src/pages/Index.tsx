@@ -5,6 +5,7 @@ import HourlyForecast from "@/components/HourlyForecast";
 import WeatherDetails from "@/components/WeatherDetails";
 import { useWeather } from "@/hooks/useWeather";
 import { useToast } from "@/hooks/use-toast";
+import weatherBg from "@/assets/weather-bg.jpg";
 
 const Index = () => {
   const { weather, hourlyForecast, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
@@ -35,7 +36,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10 flex flex-col">
+    <div 
+      className="min-h-screen flex flex-col bg-cover bg-center bg-fixed"
+      style={{ backgroundImage: `url(${weatherBg})` }}
+    >
+      <div className="min-h-screen flex flex-col bg-background/60 backdrop-blur-sm">
       {/* Header */}
       <header className="p-6">
         <div className="flex items-center gap-3">
@@ -111,6 +116,7 @@ const Index = () => {
           Powered by OpenWeatherMap API
         </p>
       </footer>
+      </div>
     </div>
   );
 };
