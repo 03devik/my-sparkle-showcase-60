@@ -23,6 +23,15 @@ export interface HourlyForecast {
   description: string;
 }
 
+export interface DailyForecast {
+  day: string;
+  date: string;
+  tempHigh: number;
+  tempLow: number;
+  icon: string;
+  description: string;
+}
+
 const generateHourlyForecast = (baseTemp: number): HourlyForecast[] => {
   const hours = [];
   const now = new Date();
@@ -40,6 +49,30 @@ const generateHourlyForecast = (baseTemp: number): HourlyForecast[] => {
     });
   }
   return hours;
+};
+
+const generateWeeklyForecast = (baseTemp: number, baseIcon: string): DailyForecast[] => {
+  const days = [];
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const icons = ["01d", "02d", "03d", "04d", "09d", "10d", "13d"];
+  const descriptions = ["Clear sky", "Few clouds", "Scattered clouds", "Overcast", "Light rain", "Rain", "Snow"];
+  
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const tempVariation = Math.sin((i / 7) * Math.PI) * 4;
+    const iconIndex = i === 0 ? icons.indexOf(baseIcon) !== -1 ? icons.indexOf(baseIcon) : 0 : Math.floor(Math.random() * icons.length);
+    
+    days.push({
+      day: i === 0 ? "Today" : dayNames[date.getDay()],
+      date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      tempHigh: Math.round(baseTemp + tempVariation + Math.random() * 3),
+      tempLow: Math.round(baseTemp - 5 + tempVariation - Math.random() * 3),
+      icon: i === 0 ? baseIcon : icons[iconIndex],
+      description: i === 0 ? descriptions[iconIndex] : descriptions[iconIndex],
+    });
+  }
+  return days;
 };
 
 const formatTime = (offset: number): string => {
@@ -126,6 +159,7 @@ const API_KEY = ""; // Add your OpenWeatherMap API key here
 export const useWeather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [hourlyForecast, setHourlyForecast] = useState<HourlyForecast[]>([]);
+  const [weeklyForecast, setWeeklyForecast] = useState<DailyForecast[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -139,6 +173,7 @@ export const useWeather = () => {
         setTimeout(() => {
           setWeather(demoData);
           setHourlyForecast(generateHourlyForecast(demoData.temp));
+          setWeeklyForecast(generateWeeklyForecast(demoData.temp, demoData.icon));
           setIsLoading(false);
         }, 500);
       } else {
@@ -159,7 +194,9 @@ export const useWeather = () => {
             description: ["sunny", "cloudy", "rainy", "windy"][Math.floor(Math.random() * 4)],
             icon: ["01d", "02d", "03d", "04d", "10d"][Math.floor(Math.random() * 5)],
           });
+          const icon = ["01d", "02d", "03d", "04d", "10d"][Math.floor(Math.random() * 5)];
           setHourlyForecast(generateHourlyForecast(temp));
+          setWeeklyForecast(generateWeeklyForecast(temp, icon));
           setIsLoading(false);
           toast({
             title: "Demo Mode",
@@ -196,6 +233,7 @@ export const useWeather = () => {
         icon: data.weather[0].icon,
       });
       setHourlyForecast(generateHourlyForecast(data.main.temp));
+      setWeeklyForecast(generateWeeklyForecast(data.main.temp, data.weather[0].icon));
     } catch (error) {
       toast({
         title: "Error",
@@ -229,6 +267,7 @@ export const useWeather = () => {
           icon: "02d",
         });
         setHourlyForecast(generateHourlyForecast(temp));
+        setWeeklyForecast(generateWeeklyForecast(temp, "02d"));
         setIsLoading(false);
         toast({
           title: "Demo Mode",
@@ -264,6 +303,7 @@ export const useWeather = () => {
         icon: data.weather[0].icon,
       });
       setHourlyForecast(generateHourlyForecast(data.main.temp));
+      setWeeklyForecast(generateWeeklyForecast(data.main.temp, data.weather[0].icon));
     } catch (error) {
       toast({
         title: "Error",
@@ -275,5 +315,5 @@ export const useWeather = () => {
     }
   };
 
-  return { weather, hourlyForecast, isLoading, fetchWeather, fetchWeatherByCoords };
+  return { weather, hourlyForecast, weeklyForecast, isLoading, fetchWeather, fetchWeatherByCoords };
 };
