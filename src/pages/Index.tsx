@@ -1,15 +1,17 @@
 import { Cloud } from "lucide-react";
+import { useMemo } from "react";
 import SearchBar from "@/components/SearchBar";
 import WeatherCard from "@/components/WeatherCard";
 import HourlyForecast from "@/components/HourlyForecast";
 import WeatherDetails from "@/components/WeatherDetails";
+import WeeklyForecast from "@/components/WeeklyForecast";
 import Navbar from "@/components/Navbar";
 import { useWeather } from "@/hooks/useWeather";
 import { useToast } from "@/hooks/use-toast";
-import weatherBg from "@/assets/weather-bg.jpg";
+import { getBackgroundStyle } from "@/utils/weatherBackgrounds";
 
 const Index = () => {
-  const { weather, hourlyForecast, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
+  const { weather, hourlyForecast, weeklyForecast, isLoading, fetchWeather, fetchWeatherByCoords } = useWeather();
   const { toast } = useToast();
 
   const handleGetLocation = () => {
@@ -36,12 +38,27 @@ const Index = () => {
     );
   };
 
+  // Get dynamic background based on weather condition
+  const backgroundStyle = useMemo(() => {
+    if (weather) {
+      return getBackgroundStyle(weather.description, weather.icon);
+    }
+    // Default twilight background
+    return {
+      background: 'linear-gradient(180deg, #2d1b4e 0%, #4a2c6a 30%, #6b4d8a 60%, #8b6ea8 100%)',
+      overlayColor: 'rgba(0, 0, 0, 0.4)',
+    };
+  }, [weather]);
+
   return (
     <div 
-      className="min-h-screen flex flex-col bg-cover bg-center bg-fixed"
-      style={{ backgroundImage: `url(${weatherBg})` }}
+      className="min-h-screen flex flex-col transition-all duration-1000 ease-in-out"
+      style={{ background: backgroundStyle.background }}
     >
-      <div className="min-h-screen flex flex-col bg-background/60 backdrop-blur-sm">
+      <div 
+        className="min-h-screen flex flex-col backdrop-blur-sm transition-all duration-1000"
+        style={{ backgroundColor: backgroundStyle.overlayColor }}
+      >
         {/* Navbar with AI Assistant */}
         <Navbar weatherData={weather} />
 
@@ -89,6 +106,9 @@ const Index = () => {
                   sunrise={weather.sunrise}
                   sunset={weather.sunset}
                 />
+
+                {/* Weekly Forecast */}
+                <WeeklyForecast forecast={weeklyForecast} />
               </div>
             )}
 
