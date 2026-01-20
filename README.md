@@ -77,7 +77,7 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/c
 <img width="1036" height="1843" alt="my-sparkle-showcase-60 lovable app_ (7)" src="https://github.com/user-attachments/assets/18abfe2f-370f-4233-8b97-86e3e98cce23" />
 
 <img width="1036" height="1843" alt="my-sparkle-showcase-60 lovable app_ (5)" src="https://github.com/user-attachments/assets/fb52b171-82b4-4e04-a788-50ee6f4efdbd" />
-<img width="461" height="512" alt="my-sparkle-showcase-60 lovable app_ (6)" src="https://github.com/user-attachments/assets/7bf84f3d-cd8a-4509-b9d3-529e330e1388" />
+<img width="455" height="502" alt="my-sparkle-showcase-60 lovable app_ (8)" src="https://github.com/user-attachments/assets/c1352371-8db7-4c5b-8879-ca4ad1b8bd8e" />
 
 
 
