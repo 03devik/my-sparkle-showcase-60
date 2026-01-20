@@ -53,7 +53,7 @@ const Index = () => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col relative transition-all duration-[2000ms] ease-in-out"
+      className="min-h-screen flex flex-col relative transition-all duration-[4000ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
       style={{ background: backgroundStyle.background }}
     >
       {/* Weather-themed background elements */}
@@ -63,7 +63,7 @@ const Index = () => {
       />
       
       <div 
-        className="min-h-screen flex flex-col backdrop-blur-sm transition-all duration-[2000ms] relative z-10"
+        className="min-h-screen flex flex-col backdrop-blur-sm transition-all duration-[4000ms] ease-[cubic-bezier(0.4,0,0.2,1)] relative z-10"
         style={{ backgroundColor: backgroundStyle.overlayColor }}
       >
         {/* Navbar with AI Assistant */}
