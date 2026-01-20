@@ -5,6 +5,7 @@ import WeatherCard from "@/components/WeatherCard";
 import HourlyForecast from "@/components/HourlyForecast";
 import WeatherDetails from "@/components/WeatherDetails";
 import WeeklyForecast from "@/components/WeeklyForecast";
+import WeatherBackground from "@/components/WeatherBackground";
 import Navbar from "@/components/Navbar";
 import { useWeather } from "@/hooks/useWeather";
 import { useToast } from "@/hooks/use-toast";
@@ -52,11 +53,17 @@ const Index = () => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col transition-all duration-1000 ease-in-out"
+      className="min-h-screen flex flex-col relative transition-all duration-[2000ms] ease-in-out"
       style={{ background: backgroundStyle.background }}
     >
+      {/* Weather-themed background elements */}
+      <WeatherBackground 
+        description={weather?.description} 
+        icon={weather?.icon} 
+      />
+      
       <div 
-        className="min-h-screen flex flex-col backdrop-blur-sm transition-all duration-1000"
+        className="min-h-screen flex flex-col backdrop-blur-sm transition-all duration-[2000ms] relative z-10"
         style={{ backgroundColor: backgroundStyle.overlayColor }}
       >
         {/* Navbar with AI Assistant */}

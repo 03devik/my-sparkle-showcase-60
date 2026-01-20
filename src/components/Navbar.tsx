@@ -182,7 +182,7 @@ const Navbar = ({ weatherData }: NavbarProps) => {
         {/* Logo */}
         <div className="flex items-center gap-3">
           <Cloud className="w-8 h-8 text-primary" />
-          <h1 className="text-xl font-bold text-foreground">Weather App</h1>
+          <h1 className="text-xl font-bold text-foreground">WeatherPulse</h1>
         </div>
 
         {/* AI Assistant Button */}
