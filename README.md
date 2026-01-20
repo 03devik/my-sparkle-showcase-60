@@ -72,6 +72,15 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
 
-Screenshots
-<img width="1036" height="665" alt="my-sparkle-showcase-60 lovable app_ (1)" src="https://github.com/user-attachments/assets/5a44ed5d-2b12-45e5-9cde-ec36e145758c" />
+**Screenshots**
+<img width="1036" height="665" alt="my-sparkle-showcase-60 lovable app_ (3)" src="https://github.com/user-attachments/assets/ae0eb9b1-7211-4b54-be9e-3d11c9085897" />
+<img width="1036" height="1843" alt="my-sparkle-showcase-60 lovable app_ (7)" src="https://github.com/user-attachments/assets/18abfe2f-370f-4233-8b97-86e3e98cce23" />
+
+<img width="1036" height="1843" alt="my-sparkle-showcase-60 lovable app_ (5)" src="https://github.com/user-attachments/assets/fb52b171-82b4-4e04-a788-50ee6f4efdbd" />
+<img width="461" height="512" alt="my-sparkle-showcase-60 lovable app_ (6)" src="https://github.com/user-attachments/assets/7bf84f3d-cd8a-4509-b9d3-529e330e1388" />
+
+
+
+
+
 
